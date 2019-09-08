@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
+    xmlns:converters="clr-namespace:LocationTracker.Converters"
+    x:Class="LocationTracker.Pages.MapPage">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   FontSize="Large">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding MyLocation.Latitude}"
+                              d:Text="-37" />
+                        <Span Text="," />
+                        <Span Text="{Binding MyLocation.Longitude}"
+                              d:Text="145.2" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <CollectionView ItemsSource="{Binding Locations}"
+                            Grid.Row="1"
+                            BackgroundColor="Green">
+                <d:CollectionView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>a</x:String>
+                        <x:String>a</x:String>
+                        <x:String>a</x:String>
+                    </x:Array>
+                </d:CollectionView.ItemsSource>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid BackgroundColor="Red">
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding Latitude}"
+                                              d:Text="-37" />
+                                        <Span Text="," />
+                                        <Span Text="{Binding Longitude}"
+                                              d:Text="145.2" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <maps:Map
+                x:Name="TheMap"
+                BackgroundColor="Aqua"
+                Grid.Column="1"
+                IsShowingUser="True"
+                Grid.RowSpan="2"
+                ItemsSource="{Binding Locations}"
+                >
+                <maps:Map.ItemTemplate>
+                    <DataTemplate>
+                        <maps:Pin
+                            Position="{Binding ., Converter={StaticResource LocationToPositionConverter}}"
+                            Label="{Binding Name}" />
+                    </DataTemplate>
+                </maps:Map.ItemTemplate>
+            </maps:Map>
+        </Grid>
+    </ContentPage.Content>
+    <ContentPage.Resources>
+        <converters:LocationToPositionConverter
+                x:Key="LocationToPositionConverter" />
+    </ContentPage.Resources>
+
+</ContentPage>

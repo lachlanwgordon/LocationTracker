@@ -1,0 +1,28 @@
+﻿@page "/mappage"
+@using LocationTracker.Blazor.ViewModels
+@inject MapPageViewModel VM
+
+<div>
+    <h1>Map Page</h1>
+    <h2>Message: @VM.Message</h2>
+    <button  @onclick="VM.ExecuteGoCommand">Click Me </button>
+    <tbody>
+            @foreach (var location in VM.Locations)
+            {
+                <tr>
+                    <td>@location.Latitude</td>
+                    <td>@location.Longitude</td>
+                    <td>@location.Name</td>
+                </tr>
+            }
+        </tbody>
+</div>
+
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        VM.Locations.CollectionChanged += (o,e) => StateHasChanged();
+        VM.PropertyChanged += (o,e) => StateHasChanged();
+    }
+}
